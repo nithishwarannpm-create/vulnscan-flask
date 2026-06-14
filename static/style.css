@@ -1,0 +1,562 @@
+/* =============================================================
+   style.css — VulnScan dark cybersecurity theme
+   Palette:
+     --vs-bg        #0b0e14   deep space background
+     --vs-surface   #111722   card surface
+     --vs-border    #1e2a3a   subtle borders
+     --vs-accent    #00d4aa   teal green accent
+     --vs-accent2   #3b82f6   electric blue highlight
+     --vs-text      #c8d8e8   body text
+     --vs-muted     #5a7080   muted text
+   Signature: the animated hex-grid hero graphic
+============================================================= */
+
+/* ── Imports ─────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+/* ── Tokens ──────────────────────────────────────────────── */
+:root {
+  --vs-bg:        #0b0e14;
+  --vs-surface:   #111722;
+  --vs-surface2:  #161d2b;
+  --vs-border:    #1e2a3a;
+  --vs-accent:    #00d4aa;
+  --vs-accent2:   #3b82f6;
+  --vs-danger:    #ef4444;
+  --vs-warning:   #f59e0b;
+  --vs-medium:    #f97316;
+  --vs-low:       #22c55e;
+  --vs-text:      #c8d8e8;
+  --vs-muted:     #5a7080;
+  --vs-radius:    10px;
+  --vs-radius-lg: 16px;
+  --vs-mono:      'JetBrains Mono', monospace;
+  --vs-sans:      'Inter', system-ui, sans-serif;
+}
+
+/* ── Base reset ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--vs-bg);
+  color: var(--vs-text);
+  font-family: var(--vs-sans);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--vs-bg); }
+::-webkit-scrollbar-thumb { background: var(--vs-border); border-radius: 3px; }
+
+/* ── Navbar ──────────────────────────────────────────────── */
+.vs-navbar {
+  background: rgba(11,14,20,.92);
+  border-bottom: 1px solid var(--vs-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0.75rem 0;
+}
+
+.vs-logo-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--vs-accent), var(--vs-accent2));
+  border-radius: 8px;
+  font-size: 1.1rem;
+  color: #000;
+}
+
+.vs-logo-text {
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: var(--vs-text);
+}
+
+.vs-accent { color: var(--vs-accent); }
+
+.vs-navbar .nav-link {
+  color: var(--vs-muted);
+  font-size: 0.875rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  transition: color .2s, background .2s;
+}
+.vs-navbar .nav-link:hover {
+  color: var(--vs-text);
+  background: var(--vs-border);
+}
+
+.vs-badge-status {
+  background: rgba(0,212,170,.12);
+  color: var(--vs-accent);
+  border: 1px solid rgba(0,212,170,.3);
+  font-size: 0.75rem;
+  padding: 0.3em 0.7em;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vs-pulse {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--vs-accent);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .5; transform: scale(.8); }
+}
+
+/* ── Hero ────────────────────────────────────────────────── */
+.vs-hero {
+  padding: 5rem 0 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.vs-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 50%, rgba(0,212,170,.06) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 20% 80%, rgba(59,130,246,.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.vs-eyebrow {
+  font-family: var(--vs-mono);
+  font-size: 0.8rem;
+  color: var(--vs-accent);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+
+.vs-hero-title {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: #fff;
+  margin-bottom: 1.25rem;
+}
+
+.vs-gradient-text {
+  background: linear-gradient(90deg, var(--vs-accent) 0%, var(--vs-accent2) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.vs-hero-sub {
+  font-size: 1.05rem;
+  color: var(--vs-muted);
+  max-width: 480px;
+  line-height: 1.7;
+}
+
+.vs-stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--vs-surface);
+  border: 1px solid var(--vs-border);
+  border-radius: 20px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.8rem;
+  color: var(--vs-text);
+}
+
+/* Hero graphic */
+.vs-hero-graphic {
+  position: relative;
+  width: 320px;
+  height: 320px;
+}
+
+.vs-hex {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  color: var(--vs-accent);
+  border: 1px solid rgba(0,212,170,.25);
+  background: var(--vs-surface);
+  animation: float 6s ease-in-out infinite;
+}
+
+.vs-hex-center {
+  width: 90px; height: 90px;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 2rem;
+  background: linear-gradient(135deg, rgba(0,212,170,.15), rgba(59,130,246,.15));
+  border-color: rgba(0,212,170,.5);
+  animation: none;
+}
+
+.vs-hex-1 { width:62px; height:62px; top:8%;  left:50%; animation-delay:0s; }
+.vs-hex-2 { width:54px; height:54px; top:50%; left:8%;  animation-delay:1.5s; }
+.vs-hex-3 { width:58px; height:58px; top:75%; left:60%; animation-delay:0.8s; }
+.vs-hex-4 { width:50px; height:50px; top:20%; left:20%; animation-delay:2.2s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-14px); }
+}
+
+/* ── Sections ────────────────────────────────────────────── */
+.vs-section { padding: 4rem 0; }
+.vs-section-alt { background: var(--vs-surface2); }
+
+.vs-section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+/* ── Cards ───────────────────────────────────────────────── */
+.vs-card {
+  background: var(--vs-surface);
+  border: 1px solid var(--vs-border);
+  border-radius: var(--vs-radius-lg);
+  overflow: hidden;
+}
+
+.vs-card-header {
+  display: flex;
+  align-items: center;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--vs-border);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--vs-text);
+  background: rgba(255,255,255,.02);
+}
+
+.vs-card-body { padding: 1.25rem; }
+
+.vs-scan-card {
+  box-shadow: 0 0 0 1px var(--vs-border), 0 20px 60px rgba(0,0,0,.4);
+}
+
+/* ── URL Input ───────────────────────────────────────────── */
+.vs-url-input {
+  background: var(--vs-bg) !important;
+  border: 1px solid var(--vs-border) !important;
+  color: var(--vs-text) !important;
+  font-family: var(--vs-mono);
+  font-size: 0.875rem;
+  border-radius: var(--vs-radius) !important;
+  padding-left: 2.5rem !important;
+  height: 46px;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.vs-url-input:focus {
+  border-color: var(--vs-accent) !important;
+  box-shadow: 0 0 0 3px rgba(0,212,170,.15) !important;
+  outline: none;
+}
+
+.vs-url-input::placeholder { color: var(--vs-muted); }
+
+.vs-input-prefix {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--vs-muted);
+  pointer-events: none;
+  font-size: 0.9rem;
+  z-index: 5;
+}
+
+/* ── Scan button ─────────────────────────────────────────── */
+.vs-btn-scan {
+  background: linear-gradient(135deg, var(--vs-accent), var(--vs-accent2));
+  color: #000;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--vs-radius);
+  padding: 0.65rem 1.5rem;
+  white-space: nowrap;
+  height: 46px;
+  font-size: 0.875rem;
+  transition: opacity .2s, transform .15s;
+}
+.vs-btn-scan:hover  { opacity: .9; transform: translateY(-1px); color: #000; }
+.vs-btn-scan:active { transform: translateY(0); }
+.vs-btn-scan:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+.vs-btn-outline {
+  background: transparent;
+  border: 1px solid var(--vs-border);
+  color: var(--vs-text);
+  border-radius: 7px;
+  font-size: 0.78rem;
+  padding: 0.3rem 0.75rem;
+  transition: border-color .2s, color .2s;
+}
+.vs-btn-outline:hover { border-color: var(--vs-accent); color: var(--vs-accent); }
+
+/* ── Progress bar ────────────────────────────────────────── */
+.vs-progress {
+  background: var(--vs-border);
+  border-radius: 4px;
+  height: 6px;
+  overflow: hidden;
+}
+
+.vs-progress .progress-bar {
+  background: linear-gradient(90deg, var(--vs-accent), var(--vs-accent2));
+  border-radius: 4px;
+}
+
+/* ── Metric cards ────────────────────────────────────────── */
+.vs-metric-card {
+  background: var(--vs-surface);
+  border: 1px solid var(--vs-border);
+  border-radius: var(--vs-radius);
+  padding: 1rem 1.25rem;
+  text-align: center;
+}
+
+.vs-metric-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--vs-muted);
+  margin-bottom: .35rem;
+}
+
+.vs-metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  font-family: var(--vs-mono);
+}
+
+/* ── Severity breakdown pills ────────────────────────────── */
+.vs-sev-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--vs-bg);
+  border: 1px solid var(--vs-border);
+  border-radius: var(--vs-radius);
+  padding: 0.75rem 1rem;
+}
+
+.vs-sev-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.vs-sev-label { font-size: 0.82rem; color: var(--vs-muted); }
+.vs-sev-count { font-size: 1.1rem; font-weight: 700; font-family: var(--vs-mono); color: #fff; }
+
+/* ── Accordion (findings) ────────────────────────────────── */
+.vs-accordion .accordion-item {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--vs-border);
+}
+
+.vs-accordion .accordion-item:last-child { border-bottom: none; }
+
+.vs-accordion .accordion-button {
+  background: var(--vs-surface);
+  color: var(--vs-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.9rem 1.25rem;
+  box-shadow: none !important;
+  gap: 10px;
+}
+
+.vs-accordion .accordion-button:not(.collapsed) {
+  background: rgba(0,212,170,.05);
+  color: #fff;
+}
+
+.vs-accordion .accordion-button::after {
+  filter: invert(1) brightness(0.6);
+}
+
+.vs-accordion .accordion-body {
+  background: var(--vs-bg);
+  font-size: 0.875rem;
+  color: var(--vs-muted);
+  padding: 1.1rem 1.25rem;
+  border-top: 1px solid var(--vs-border);
+}
+
+/* Finding body sections */
+.vs-finding-section { margin-bottom: 0.9rem; }
+.vs-finding-section:last-child { margin-bottom: 0; }
+.vs-finding-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--vs-muted);
+  margin-bottom: .25rem;
+}
+.vs-finding-text { color: var(--vs-text); line-height: 1.55; }
+
+.vs-fix-box {
+  background: rgba(0,212,170,.06);
+  border: 1px solid rgba(0,212,170,.2);
+  border-radius: 7px;
+  padding: 0.65rem 0.9rem;
+  font-family: var(--vs-mono);
+  font-size: 0.8rem;
+  color: var(--vs-accent);
+  line-height: 1.6;
+}
+
+/* Risk badge variants */
+.vs-risk-critical { background: rgba(239,68,68,.15);  color: #ef4444; border:1px solid rgba(239,68,68,.3); }
+.vs-risk-high     { background: rgba(249,115,22,.15); color: #f97316; border:1px solid rgba(249,115,22,.3); }
+.vs-risk-medium   { background: rgba(245,158,11,.15); color: #f59e0b; border:1px solid rgba(245,158,11,.3); }
+.vs-risk-low      { background: rgba(34,197,94,.15);  color: #22c55e; border:1px solid rgba(34,197,94,.3); }
+
+.vs-risk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2em 0.6em;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  white-space: nowrap;
+}
+
+/* ── Recommendations ─────────────────────────────────────── */
+.vs-recommendations {
+  padding-left: 0;
+  list-style: none;
+  counter-reset: reco;
+}
+
+.vs-recommendations li {
+  counter-increment: reco;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--vs-border);
+  font-size: 0.875rem;
+  color: var(--vs-text);
+}
+
+.vs-recommendations li:last-child { border-bottom: none; }
+
+.vs-recommendations li::before {
+  content: counter(reco, decimal-leading-zero);
+  font-family: var(--vs-mono);
+  font-size: 0.75rem;
+  color: var(--vs-accent);
+  background: rgba(0,212,170,.1);
+  border: 1px solid rgba(0,212,170,.25);
+  border-radius: 5px;
+  padding: 0.1em 0.45em;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── History table ───────────────────────────────────────── */
+.vs-table {
+  color: var(--vs-text);
+  font-size: 0.85rem;
+}
+
+.vs-table thead th {
+  color: var(--vs-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-weight: 600;
+  border-color: var(--vs-border);
+  padding: 0.75rem 1rem;
+  background: var(--vs-surface2);
+}
+
+.vs-table tbody tr { transition: background .15s; }
+.vs-table tbody tr:hover { background: rgba(255,255,255,.025); }
+
+.vs-table tbody td {
+  border-color: var(--vs-border);
+  padding: 0.7rem 1rem;
+  vertical-align: middle;
+}
+
+.vs-table .url-cell {
+  font-family: var(--vs-mono);
+  font-size: 0.8rem;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Feature cards (About section) ──────────────────────── */
+.vs-feature-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--vs-surface);
+  border: 1px solid var(--vs-border);
+  border-radius: var(--vs-radius);
+  padding: 1rem;
+  transition: border-color .2s;
+}
+
+.vs-feature-card:hover { border-color: rgba(0,212,170,.3); }
+
+.vs-feature-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  width: 32px;
+  text-align: center;
+  margin-top: 1px;
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+.vs-footer {
+  border-top: 1px solid var(--vs-border);
+  padding: 2rem 0;
+  background: var(--vs-surface2);
+}
+
+/* ── Utility overrides ───────────────────────────────────── */
+.text-muted { color: var(--vs-muted) !important; }
+
+/* ── Responsive tweaks ───────────────────────────────────── */
+@media (max-width: 576px) {
+  .vs-hero { padding: 3rem 0 2.5rem; }
+  .vs-metric-value { font-size: 1.15rem; }
+  .vs-card-header { flex-wrap: wrap; gap: 8px; }
+}

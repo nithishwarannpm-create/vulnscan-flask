@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VulnScan — Web Vulnerability Scanner</title>
+
+  <!-- Bootstrap 5 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <!-- Custom styles -->
+  
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<!-- ═══════════════════════════════════════════════════ NAVBAR ═══ -->
+<nav class="navbar navbar-expand-lg vs-navbar sticky-top">
+  <div class="container-xl">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+      <span class="vs-logo-icon"><i class="bi bi-shield-shaded"></i></span>
+      <span class="vs-logo-text">Vuln<span class="vs-accent">Scan</span></span>
+    </a>
+
+    <button class="navbar-toggler border-0" type="button"
+      data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto gap-1 align-items-lg-center">
+        <li class="nav-item">
+          <a class="nav-link" href="#scanner"><i class="bi bi-search me-1"></i>Scanner</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#history"><i class="bi bi-clock-history me-1"></i>History</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#about"><i class="bi bi-info-circle me-1"></i>About</a>
+        </li>
+        <li class="nav-item ms-lg-2">
+          <span class="badge vs-badge-status">
+            <span class="vs-pulse"></span> Online
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════ HERO ══════ -->
+<section class="vs-hero">
+  <div class="container-xl">
+    <div class="row align-items-center gy-5">
+      <div class="col-lg-6">
+        <p class="vs-eyebrow"><i class="bi bi-activity me-2"></i>Active Security Tool</p>
+        <h1 class="vs-hero-title">
+          Find vulnerabilities<br>
+          <span class="vs-gradient-text">before attackers do.</span>
+        </h1>
+        <p class="vs-hero-sub">
+          VulnScan performs passive, non-destructive security checks on any public web
+          target — headers, cookies, injection indicators, and more — in seconds.
+        </p>
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <div class="vs-stat-pill">
+            <i class="bi bi-shield-check text-success"></i>
+            <span>10 check categories</span>
+          </div>
+          <div class="vs-stat-pill">
+            <i class="bi bi-lightning-charge text-warning"></i>
+            <span>Real-time results</span>
+          </div>
+          <div class="vs-stat-pill">
+            <i class="bi bi-lock text-info"></i>
+            <span>Non-destructive</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 d-none d-lg-flex justify-content-center">
+        <div class="vs-hero-graphic" aria-hidden="true">
+          <div class="vs-hex vs-hex-1"><i class="bi bi-bug"></i></div>
+          <div class="vs-hex vs-hex-2"><i class="bi bi-lock-fill"></i></div>
+          <div class="vs-hex vs-hex-3"><i class="bi bi-wifi-off"></i></div>
+          <div class="vs-hex vs-hex-4"><i class="bi bi-eye"></i></div>
+          <div class="vs-hex vs-hex-center"><i class="bi bi-shield-shaded"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ SCANNER ═══ -->
+<section id="scanner" class="vs-section">
+  <div class="container-xl">
+
+    <!-- URL Input card -->
+    <div class="vs-card vs-scan-card mb-5">
+      <div class="vs-card-header">
+        <i class="bi bi-terminal-fill me-2 text-success"></i>
+        Target URL
+        <span class="ms-auto text-muted small">HTTPS and HTTP supported</span>
+      </div>
+      <div class="vs-card-body">
+        <div class="d-flex flex-column flex-sm-row gap-3">
+          <div class="flex-grow-1 position-relative">
+            <span class="vs-input-prefix"><i class="bi bi-globe2"></i></span>
+            <input
+              id="urlInput"
+              type="url"
+              class="form-control vs-url-input"
+              placeholder="https://example.com"
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </div>
+          <button id="scanBtn" class="btn vs-btn-scan">
+            <i class="bi bi-play-fill me-1"></i>
+            <span id="scanBtnText">Start Scan</span>
+            <span id="scanSpinner" class="spinner-border spinner-border-sm ms-2 d-none"></span>
+          </button>
+        </div>
+        <p id="inputError" class="text-danger mt-2 small d-none"></p>
+
+        <!-- Progress bar -->
+        <div id="progressWrap" class="mt-4 d-none">
+          <div class="d-flex justify-content-between small text-muted mb-1">
+            <span id="progressLabel">Initializing…</span>
+            <span id="progressPct">0%</span>
+          </div>
+          <div class="progress vs-progress">
+            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated"
+              role="progressbar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results area (hidden until scan completes) -->
+    <div id="resultsArea" class="d-none">
+
+      <!-- Summary row -->
+      <div class="row g-3 mb-4" id="summaryRow">
+        <div class="col-6 col-md-3">
+          <div class="vs-metric-card">
+            <div class="vs-metric-label">Risk Score</div>
+            <div class="vs-metric-value" id="metricScore">—</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="vs-metric-card">
+            <div class="vs-metric-label">Risk Level</div>
+            <div class="vs-metric-value" id="metricLevel">—</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="vs-metric-card">
+            <div class="vs-metric-label">Vulnerabilities</div>
+            <div class="vs-metric-value" id="metricTotal">—</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="vs-metric-card">
+            <div class="vs-metric-label">Scanned At</div>
+            <div class="vs-metric-value small" id="metricTime">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Severity breakdown -->
+      <div class="vs-card mb-4">
+        <div class="vs-card-header">
+          <i class="bi bi-bar-chart-fill me-2"></i>Severity Breakdown
+          <div class="ms-auto d-flex gap-2">
+            <button id="exportJsonBtn" class="btn btn-sm vs-btn-outline">
+              <i class="bi bi-filetype-json me-1"></i>Export JSON
+            </button>
+            <button id="downloadPdfBtn" class="btn btn-sm vs-btn-outline">
+              <i class="bi bi-file-earmark-pdf me-1"></i>Download PDF
+            </button>
+          </div>
+        </div>
+        <div class="vs-card-body">
+          <div class="row g-3" id="severityBreakdown"></div>
+        </div>
+      </div>
+
+      <!-- Findings -->
+      <div class="vs-card mb-4">
+        <div class="vs-card-header">
+          <i class="bi bi-exclamation-triangle-fill me-2 text-warning"></i>
+          Findings
+          <span class="ms-2 badge bg-secondary" id="findingsBadge">0</span>
+        </div>
+        <div class="vs-card-body p-0">
+          <div id="findingsAccordion" class="accordion accordion-flush vs-accordion"></div>
+          <div id="noFindingsMsg" class="p-4 text-center text-muted d-none">
+            <i class="bi bi-shield-check display-5 text-success"></i>
+            <p class="mt-2">No vulnerabilities detected — great work!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recommendations -->
+      <div class="vs-card">
+        <div class="vs-card-header">
+          <i class="bi bi-lightbulb-fill me-2 text-warning"></i>Top Recommendations
+        </div>
+        <div class="vs-card-body">
+          <ol id="recommendationsList" class="vs-recommendations"></ol>
+        </div>
+      </div>
+
+    </div><!-- /resultsArea -->
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ HISTORY ═══ -->
+<section id="history" class="vs-section vs-section-alt">
+  <div class="container-xl">
+    <h2 class="vs-section-title">
+      <i class="bi bi-clock-history me-2 text-info"></i>Scan History
+    </h2>
+    <p class="text-muted mb-4">Recent scans from this session (last 20 entries).</p>
+
+    <div class="vs-card">
+      <div class="vs-card-body p-0">
+        <div class="table-responsive">
+          <table class="table vs-table mb-0">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Target URL</th>
+                <th>Risk Level</th>
+                <th>Score</th>
+                <th>Vulns</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody">
+              <tr id="historyEmpty">
+                <td colspan="6" class="text-center text-muted py-4">
+                  No scans yet. Run a scan above to see history.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ ABOUT ════ -->
+<section id="about" class="vs-section">
+  <div class="container-xl">
+    <h2 class="vs-section-title">
+      <i class="bi bi-info-circle me-2 text-info"></i>What VulnScan Checks
+    </h2>
+    <div class="row g-3 mt-2">
+      {% set checks = [
+        ("shield-check", "success", "Security Headers", "CSP, HSTS, X-Frame-Options, XSS-Protection, and more."),
+        ("lock-fill", "info", "HTTPS Enforcement", "Detects missing TLS and lack of HTTP→HTTPS redirection."),
+        ("database-exclamation", "danger", "SQL Injection", "Tests query parameters for database error indicators."),
+        ("code-slash", "warning", "Reflected XSS", "Checks if user input is echoed unescaped in responses."),
+        ("arrow-left-right", "warning", "Open Redirect", "Probes redirect parameters for off-domain destinations."),
+        ("eye-slash", "info", "Info Disclosure", "Flags stack traces, private keys, and internal IPs."),
+        ("hdd-network", "secondary", "Server Info", "Detects version banners in Server / X-Powered-By headers."),
+        ("folder2-open", "warning", "Directory Listing", "Checks common paths for enabled directory indexes."),
+        ("cookie", "danger", "Cookie Security", "Verifies HttpOnly, Secure, and SameSite cookie flags."),
+        ("graph-up-arrow", "success", "Risk Scoring", "Aggregates findings into a 0–100 criticality score."),
+      ] %}
+      {% for icon, color, title, desc in checks %}
+      <div class="col-sm-6 col-lg-4">
+        <div class="vs-feature-card">
+          <div class="vs-feature-icon text-{{ color }}">
+            <i class="bi bi-{{ icon }}"></i>
+          </div>
+          <div>
+            <div class="fw-semibold">{{ title }}</div>
+            <div class="text-muted small">{{ desc }}</div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ FOOTER ════ -->
+<footer class="vs-footer">
+  <div class="container-xl">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <span class="vs-logo-text">Vuln<span class="vs-accent">Scan</span></span>
+        <p class="text-muted small mt-1 mb-0">
+          A professional web vulnerability scanner. For educational and authorised use only.
+        </p>
+      </div>
+      <div class="col-md-6 text-md-end mt-3 mt-md-0">
+        <span class="text-muted small">
+          <i class="bi bi-shield-lock me-1"></i>
+          Always scan only targets you own or have explicit permission to test.
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Custom JS -->
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
