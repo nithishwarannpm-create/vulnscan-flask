@@ -2,7 +2,7 @@
 app.py - Flask application entry point and route definitions
 Web Vulnerability Scanner
 """
-
+import os
 import logging
 import json
 import re
